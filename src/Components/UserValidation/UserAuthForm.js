@@ -1,28 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from "react";
+import { useValidate } from "../../utils/useValidate";
 
 const UserAuthForm = () => {
-const [toggleSignIn,setToggleSignIn] = useState(true);
-  const handleOnSignUpClick = () =>{
-      setToggleSignIn(!toggleSignIn);
-  }
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+
+  const[errorMessage,setErrorMessage] = useState("");
+
+  const [toggleSignIn, setToggleSignIn] = useState(true);
+  const handleOnSignUpClick = () => {
+    setToggleSignIn(!toggleSignIn);
+  };
+  const msg=useValidate(email,password,username);
+
+  const handleFormSubmitButton=(e)=>{
+    e.preventDefault();
+    setErrorMessage(msg); 
+    setEmail('');
+    setPassword('');
+    setUsername('');
+    console.log(errorMessage);
+  };
 
   return (
-    <div className='border border-blue-950 p-8 bg-gradient from-black absolute top-16'>
-      <form className='flex flex-col w-96 '>
-      {toggleSignIn?"":<input className='my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto'  placeholder='Username' type='text'></input>}
-        <input className='my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto'  placeholder='Email' type='email'></input>
-        <input className='my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto'  placeholder='Password' type='password'></input>
-        <button className='my-2 bg-green-500 pl-2 py-1 text-white w-auto'>{toggleSignIn?'Login':'Sign Up'}</button>
-
+    <div className="hover:shadow-md hover:shadow-slate-500 opacity-50 hover:opacity-100 p-8 bg-gradient-to-t from-slate-900 absolute top-16">
+      <form className="flex flex-col w-96 ">
+        <h1 className="text-white text-center text-3xl font-extrabold font-mono">
+          {toggleSignIn ? "LogIn" : "SignUp"}
+        </h1>
+        {toggleSignIn ? (
+          ""
+        ) : (
+          <input
+            className="my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto"
+            placeholder="Username"
+            type="text"
+            onChange={(e)=>setUsername(e.target.value)}
+          ></input>
+        )}
+        <input
+          className="my-2 bg-gray-900 pl-2 py-1 text-gray-400 w-auto"
+          placeholder="Email"
+          type="email"
+          value={email}
+        onChange={(e)=>setEmail(e.target.value)}
+        ></input>
+        <input
+          className="my-2 bg-gray-900 pl-2 py-1 text-gray-400 w-auto"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        ></input>
+        <p className="text-red-500 text-lg">{errorMessage}</p>
+        <button
+          className="my-2 bg-red-600 pl-2 py-1 text-white w-auto"
+          onClick={handleFormSubmitButton}
+        >
+          {toggleSignIn ? "Login" : "Sign Up"}
+        </button>
       </form>
-      <div className='flex flex-row justify-center'>
-      <p className='text-white mr-1'>{toggleSignIn?'New to Vdo-GPT?':'Already have an account?'}</p>
-        <p className='text-white underline cursor-pointer' onClick={handleOnSignUpClick}>{toggleSignIn?'SignUp':'LogIn'}</p>
+      <div className="flex flex-row justify-center">
+        <p className="text-white mr-1">
+          {toggleSignIn ? "New to Vdo-GPT?" : "Already have an account?"}
+        </p>
+        <p
+          className="text-white underline cursor-pointer"
+          onClick={handleOnSignUpClick}
+        >
+          {toggleSignIn ? "SignUp" : "LogIn"}
+        </p>
       </div>
-       
-
     </div>
-  )
-}
+  );
+};
 
 export default UserAuthForm;
