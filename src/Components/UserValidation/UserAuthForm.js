@@ -1,26 +1,45 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useValidate } from "../../utils/useValidate";
+import Firebase from "../../utils/Firebase";
 
 const UserAuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const[errorMessage,setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [toggleSignIn, setToggleSignIn] = useState(true);
   const handleOnSignUpClick = () => {
     setToggleSignIn(!toggleSignIn);
   };
-  const msg=useValidate(email,password,username);
 
-  const handleFormSubmitButton=(e)=>{
+  //custom hook useValidate
+  const msg = useValidate(email, password, username);
+
+  const handleFormSubmitButton = (e) => {
     e.preventDefault();
-    setErrorMessage(msg); 
-    setEmail('');
-    setPassword('');
-    setUsername('');
-    console.log(errorMessage);
+    setErrorMessage(msg);
+    if (!toggleSignIn) {
+      // console.log("dping authentication ");
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+          // Signed up
+          // const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+        });
+    }
+    setEmail("");
+    setPassword("");
+    setUsername("");
   };
 
   return (
@@ -36,7 +55,7 @@ const UserAuthForm = () => {
             className="my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto"
             placeholder="Username"
             type="text"
-            onChange={(e)=>setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           ></input>
         )}
         <input
@@ -44,14 +63,14 @@ const UserAuthForm = () => {
           placeholder="Email"
           type="email"
           value={email}
-        onChange={(e)=>setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         ></input>
         <input
           className="my-2 bg-gray-900 pl-2 py-1 text-gray-400 w-auto"
           placeholder="Password"
           type="password"
           value={password}
-          onChange={(e)=>setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         ></input>
         <p className="text-red-500 text-lg">{errorMessage}</p>
         <button
