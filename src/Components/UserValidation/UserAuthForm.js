@@ -1,94 +1,110 @@
 import React, { useState, useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useValidate } from "../../utils/useValidate";
-import Firebase from "../../utils/Firebase";
-
+import { Validate } from "../../utils/Validate";
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import { auth } from "../../utils/Firebase";
 const UserAuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-
   const [errorMessage, setErrorMessage] = useState("");
+  const [IsSignIn, setIsSignIn] = useState(true);
 
-  const [toggleSignIn, setToggleSignIn] = useState(true);
   const handleOnSignUpClick = () => {
-    setToggleSignIn(!toggleSignIn);
+    setIsSignIn(!IsSignIn);
   };
-
-  //custom hook useValidate
-  const msg = useValidate(email, password, username);
 
   const handleFormSubmitButton = (e) => {
     e.preventDefault();
-    setErrorMessage(msg);
-    if (!toggleSignIn) {
-      // console.log("dping authentication ");
-      const auth = getAuth();
-      createUserWithEmailAndPassword(auth, email, password)
+    const message = Validate(email, password);
+    setErrorMessage(message);
+    if (message) return;
+
+    if (IsSignIn) {
+      // SignIn logic
+      console.log("Signing in");
+      signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          // Signed in 
           console.log(userCredential);
-          // Signed up
-          // const user = userCredential.user;
+          const user = userCredential.user;
+          console.log(user);
           // ...
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
+          setErrorMessage(errorMessage)
+        });
+
+    } else {
+      // SignUp logic
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log(userCredential);
+          console.log("user SignedUp");
+          alert("User Created Successfully !!!");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
         });
     }
-    setEmail("");
-    setPassword("");
-    setUsername("");
   };
 
   return (
-    <div className="hover:shadow-md hover:shadow-slate-500 opacity-50 hover:opacity-100 p-8 bg-gradient-to-t from-slate-900 absolute top-16">
+    <div className="shadow-md shadow-slate-500 p-8 bg-gradient-to-t from-slate-900 absolute top-16 border ">
       <form className="flex flex-col w-96 ">
         <h1 className="text-white text-center text-3xl font-extrabold font-mono">
-          {toggleSignIn ? "LogIn" : "SignUp"}
+          {IsSignIn ? "LogIn" : "SignUp"}
         </h1>
-        {toggleSignIn ? (
-          ""
-        ) : (
+        {/* Username input field */}
+        {!IsSignIn && (
           <input
             className="my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto"
             placeholder="Username"
             type="text"
             onChange={(e) => setUsername(e.target.value)}
-          ></input>
+          />
         )}
+        {/* Email input field */}
         <input
           className="my-2 bg-gray-900 pl-2 py-1 text-gray-400 w-auto"
           placeholder="Email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        ></input>
+        />
+        {/* Password input field */}
         <input
           className="my-2 bg-gray-900 pl-2 py-1 text-gray-400 w-auto"
           placeholder="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        ></input>
+        />
+        {/* Error message */}
         <p className="text-red-500 text-lg">{errorMessage}</p>
+
+        {/* Submit button */}
         <button
           className="my-2 bg-red-600 pl-2 py-1 text-white w-auto"
           onClick={handleFormSubmitButton}
         >
-          {toggleSignIn ? "Login" : "Sign Up"}
+          {IsSignIn ? "Login" : "Sign Up"}
         </button>
       </form>
+      {/* Switch between login and signup */}
       <div className="flex flex-row justify-center">
         <p className="text-white mr-1">
-          {toggleSignIn ? "New to Vdo-GPT?" : "Already have an account?"}
+          {IsSignIn ? "New to Vdo-GPT?" : "Already have an account?"}
         </p>
         <p
           className="text-white underline cursor-pointer"
           onClick={handleOnSignUpClick}
         >
-          {toggleSignIn ? "SignUp" : "LogIn"}
+          {IsSignIn ? "SignUp" : "LogIn"}
         </p>
       </div>
     </div>
