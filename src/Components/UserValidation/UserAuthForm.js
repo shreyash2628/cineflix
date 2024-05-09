@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Validate } from "../../utils/Validate";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
 import { auth } from "../../utils/Firebase";
+import LinearProgress from '@mui/material/LinearProgress';
+
 const UserAuthForm = () => {
+  const [showLoader,setShowLoader] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -12,7 +15,6 @@ const UserAuthForm = () => {
   const handleOnSignUpClick = () => {
     setIsSignIn(!IsSignIn);
   };
-
   const handleFormSubmitButton = (e) => {
     e.preventDefault();
     const message = Validate(email, password);
@@ -21,13 +23,16 @@ const UserAuthForm = () => {
 
     if (IsSignIn) {
       // SignIn logic
+      setShowLoader(true);
       console.log("Signing in");
+      
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in 
           console.log(userCredential);
           const user = userCredential.user;
           console.log(user);
+
           // ...
         })
         .catch((error) => {
@@ -38,12 +43,12 @@ const UserAuthForm = () => {
 
     } else {
       // SignUp logic
-
+      setShowLoader(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log(userCredential);
           console.log("user SignedUp");
-          alert("User Created Successfully !!!");
+         // alert("User Created Successfully !!!");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -96,7 +101,7 @@ const UserAuthForm = () => {
         </button>
       </form>
       {/* Switch between login and signup */}
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center ">
         <p className="text-white mr-1">
           {IsSignIn ? "New to Vdo-GPT?" : "Already have an account?"}
         </p>
@@ -106,7 +111,13 @@ const UserAuthForm = () => {
         >
           {IsSignIn ? "SignUp" : "LogIn"}
         </p>
-      </div>
+      </div >
+
+      {
+        showLoader?<LinearProgress className="mt-6"/>:<></>
+      }
+
+      
     </div>
   );
 };
