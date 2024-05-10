@@ -15,6 +15,7 @@ const Header = () => {
   const [showUserAccountManage,setShowUserAccountManage] = useState(false);
 
   const handleUserAccountManageClicked = ()=>{
+    console.log("clicked");
     setShowUserAccountManage(!showUserAccountManage);
   }
 
@@ -34,12 +35,12 @@ const Header = () => {
   },[]);
 
   return (
-    <div className='flex flex-row justify-between  h-10  md:h-16 w-screen'>
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-end">
   
-        <img className='  ' src={CineflixGptLogo}></img>
+        {/* <img className='  ' src={CineflixGptLogo}></img> */}
         
         <div className='flex p-2 h-14 flex-col ' onClick={handleUserAccountManageClicked}>
-        <img className='h-10 ' src="https://occ-0-4608-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABRhunw1-HwxU3HlvmFM9UycO_VOxatA9nWQ4aaCKTCxOVOv5OchUTFO6RJznhN4G2scAmgXUpHzkkVdq9_8f9ui0RksluPFA3w.png?r=229"></img>
+        <img className='h-11 mr-4 rounded-lg ' src="https://occ-0-4608-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABRhunw1-HwxU3HlvmFM9UycO_VOxatA9nWQ4aaCKTCxOVOv5OchUTFO6RJznhN4G2scAmgXUpHzkkVdq9_8f9ui0RksluPFA3w.png?r=229"></img>
         {
           showUserAccountManage?<UserAccountManage />:<></>
         }

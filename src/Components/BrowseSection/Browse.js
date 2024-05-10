@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header';
+import useNowPlayingMovies from './../customHooks/useNowPlayingMovies';
+import MainVideoContainer from './MainVideoContainer';
+import SecondaryContainer from './SecondaryContainer';
+
 const Browse = () => {
+ 
+useNowPlayingMovies();
+
   return (
-    <div>
+    <div className=' h-screen'>
       <Header/>
-            <h1 >hello</h1>
+      <MainVideoContainer/>
+      <SecondaryContainer/>
+
     </div>
   )
 }
