@@ -33,3 +33,5 @@ export const  TMDBoptions = {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MDA1YWFlNzc1Njg3M2I1Y2ZkZmI2MDdlNTk0NmUzYyIsInN1YiI6IjY2M2QxN2VlNTgzYjU0YjIwYjFlZmI4NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.373cMeWiBW2DNsbDx4-lZDBIeaQl9wZwn0Gdeh6vvog'
       }
     };
+
+    

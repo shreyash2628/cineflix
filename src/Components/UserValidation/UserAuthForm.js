@@ -103,7 +103,7 @@ const UserAuthForm = () => {
       {/* Switch between login and signup */}
       <div className="flex flex-row justify-center ">
         <p className="text-white mr-1">
-          {IsSignIn ? "New to Vdo-GPT?" : "Already have an account?"}
+          {IsSignIn ? "New to Cineflix-GPT?" : "Already have an account?"}
         </p>
         <p
           className="text-white underline cursor-pointer"
