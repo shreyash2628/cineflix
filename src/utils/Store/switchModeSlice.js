@@ -9,8 +9,6 @@ const switchModeSlice = createSlice({
         addSwitchMode: (state, action) => {
             state.mode = action.payload;
         },
-
-
     },
 })
 

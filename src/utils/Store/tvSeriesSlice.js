@@ -3,22 +3,26 @@ import { createSlice } from "@reduxjs/toolkit";
 const tvSeriesSlice = createSlice({
     name:"tvSeriesSlice",
     initialState:{
-        trailerVideo:null,
-        upcomingTvSeries:null,
+        upComingTvSeries:null,
         topRatedTvSeries:null,
+        popularTvSeries:null,
+        nowPlayingTvSeries:null,
     },
     reducers:{
-        addTvSeriesTrailerVideo : (state,action)=>{
-            state.trailerVideo = action.payload;
-        },
         addUpcomingTvSeries : (state,action)=>{
-            state.upcomingTvSeries=action.payload;
+            state.upComingTvSeries=action.payload;
         },
         addTopRatedTvSeries : (state,action)=>{
             state.topRatedTvSeries = action.payload;
+        }, 
+        addPopularTvSeries : (state,action)=>{
+            state.popularTvSeries = action.payload;
         },  
+        addNowPlayingTvSeries : (state,action)=>{
+            state.nowPlayingTvSeries = action.payload;
+        },
     }
 })
 
-export const {addUpcomingTvSeries,addTvSeriesTrailerVideo,addTopRatedTvSeries} = tvSeriesSlice.actions;
+export const {addUpcomingTvSeries,addTopRatedTvSeries,addPopularTvSeries,addNowPlayingTvSeries} = tvSeriesSlice.actions;
 export default tvSeriesSlice.reducer;

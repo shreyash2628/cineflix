@@ -13,13 +13,12 @@ const MainVideoContainer = () => {
     const tvSeriesFromStore = useSelector(store => store.tvSeries?.topRatedTvSeries);
 
     const mode = useSelector(store => store.switchMode?.mode);
-    const supposevideoId = useSelector(store => store.switchMode?.trailer);
+   // const supposevideoId = useSelector(store => store.switchMode?.trailer);
 
     useEffect(() => {
         if (mode === "Movies") {
             if (moviesFromStore && moviesFromStore.results.length > 0) {
                 const movieTrailer = moviesFromStore.results[3];
-                console.log("movtr", movieTrailer);
                 setOriginalTitle(movieTrailer.original_title);
                 setOverview(movieTrailer.overview);
                 setVoteAverage(movieTrailer.vote_average);
