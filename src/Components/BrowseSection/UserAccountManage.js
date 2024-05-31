@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../utils/Firebase';
 import { useDispatch } from 'react-redux';
@@ -6,7 +6,7 @@ import { addSwitchMode } from '../../utils/Store/switchModeSlice';
 
 const UserAccountManage = ({ handleUserAccountManage }) => {
   const dispatch = useDispatch();
-  
+
   const handleMoviesButtonClicked = () => {
     dispatch(addSwitchMode("Movies"));
     handleUserAccountManage();

@@ -1,82 +1,49 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import VideoBackground from './VideoBackground';
 import VideoTitle from './VideoTitle';
 
 const MainVideoContainer = () => {
-    //     const [originalTitle, setOriginalTitle] = useState('');
-    //     const [overview, setOverview] = useState('');
-    //     const [voteAverage, setVoteAverage] = useState(0);
-    //     const [mid, setMid] = useState('');
-    //     const [tid, setTid] = useState('');
-
-    //     //ISKO CHANGE KAR TO TOPRATED MOVIES
-    //     const movies = useSelector(store => store.movies?.upcomingMovies);
-    //     const tvSeries = useSelector(store => store.tvSeries?.topRatedTvSeries);
-    //     const selectedViewOption = useSelector(store => store.switchMode.mode);
-
-
-    //    // if (movies == null || tvSeries == null) return;
-    //     const movieTrailer = movies.results[0];
-    //     const tvSeriesTrailer = tvSeries.results[1];
-    //     console.log("Trailer 22", movieTrailer);
-
-    //     if(selectedViewOption=="movies")
-    //     {
-    //         setMovies();
-    //     }
-
-    //     const setMovies = ()=>{
-    //         setOriginalTitle(movieTrailer.original_title);
-    //         setOverview(movieTrailer.overview);
-    //         setVoteAverage(movieTrailer.vote_average);
-    //         setMid(movieTrailer.id);
-    //     }
-
-    //         //setTid('New TV Series ID');
-
-    //         //  const {original_title,overview,vote_average,id} = movieTrailer;//if else
-
-
-    //     console.log("mvc", mid);
-
     const [originalTitle, setOriginalTitle] = useState('');
     const [overview, setOverview] = useState('');
     const [voteAverage, setVoteAverage] = useState(0);
-    const [mid, setMid] = useState(null);
-    const [tid, setTid] = useState('');
+    const [videoId, setVideoId] = useState(null);
 
-    //ISKO CHANGE KAR TO TOPRATED MOVIES
-    const movies = useSelector(store => store.movies?.upcomingMovies);
-    const tvSeries = useSelector(store => store.tvSeries?.topRatedTvSeries);
-    // console.log("after",movies);
-    useEffect(() => {
-        if (movies && movies.results.length > 0) {
-            const movieTrailer = movies.results[0];
-            setOriginalTitle(movieTrailer.original_title);
-            setOverview(movieTrailer.overview);
-            setVoteAverage(movieTrailer.vote_average);
-            setMid(movieTrailer.id);
+    const moviesFromStore = useSelector(store => store.movies?.topRatedMovies);
+    const tvSeriesFromStore = useSelector(store => store.tvSeries?.topRatedTvSeries);
 
-        }
-    }, [movies]);
-    console.log("MID", mid);
+    const mode = useSelector(store => store.switchMode?.mode);
+    const supposevideoId = useSelector(store => store.switchMode?.trailer);
 
     useEffect(() => {
-        if (tvSeries && tvSeries.results.length > 1) {
-            const tvSeriesTrailer = tvSeries.results[1];
-            // Handle TV series trailer data if needed
+        if (mode === "Movies") {
+            if (moviesFromStore && moviesFromStore.results.length > 0) {
+                const movieTrailer = moviesFromStore.results[3];
+                console.log("movtr", movieTrailer);
+                setOriginalTitle(movieTrailer.original_title);
+                setOverview(movieTrailer.overview);
+                setVoteAverage(movieTrailer.vote_average);
+                setVideoId(movieTrailer.id);
+            }
+        } else {
+            if (tvSeriesFromStore && tvSeriesFromStore.results.length > 1) {
+                const tvSeriesTrailer = tvSeriesFromStore.results[1];
+                setOriginalTitle(tvSeriesTrailer.original_name);
+                setOverview(tvSeriesTrailer.overview);
+                setVoteAverage(tvSeriesTrailer.vote_average);
+                setVideoId(tvSeriesTrailer.id);
+            }
         }
-    }, [tvSeries]);
+    }, [moviesFromStore, tvSeriesFromStore, mode]);
 
-    if (mid === null) return;
+    if (videoId === null) return;
 
     return (
         <div className=''>
             <VideoTitle title={originalTitle} overview={overview} vote_average={voteAverage?.toFixed(1)} />
-            <VideoBackground id={mid} />
+            <VideoBackground id={videoId} />
         </div>
-    )
-}
+    );
+};
 
 export default MainVideoContainer;

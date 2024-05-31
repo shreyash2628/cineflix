@@ -2,11 +2,11 @@ import React from 'react';
 import Header from './Header';
 import MainVideoContainer from './MainVideoContainer';
 import SecondaryContainer from './SecondaryContainer';
-import useUpcomingMovies from './../../customHooks/useUpcomingMovies';
 import useTopRatedTvSeries from '../../customHooks/useTopRatedTvSeries';
+import useTopRatedMovies from '../../customHooks/useTopRatedMovies';
 
 const Browse = () => {
-  useUpcomingMovies();
+  useTopRatedMovies();
   useTopRatedTvSeries();
   return (
     <div className=''>

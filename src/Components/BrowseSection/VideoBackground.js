@@ -1,30 +1,39 @@
-import React from 'react'
-import useMovieTrailer from '../../customHooks/useMovieTrailer';
-import useTvSeriesTrailer from '../../customHooks/useTvSeriesTrailer';
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+import { TMDBoptions } from '../../utils/constants';
 
 const VideoBackground = ({ id }) => {
-    const selectedViewOption = useSelector(store => store.switchMode.mode);
-    // console.log("vdobg",id);
-    useMovieTrailer(id);
-    //useTvSeriesTrailer(id)
+    const [Trailer, setTrailer] = useState(null);
+    const mode = useSelector(store => store.switchMode?.mode);
+    //id aa rhi hai alag alag including null value also  
+    const fetchTrailer = async () => {
+        if (mode === "Movies") {
+            const data = await fetch(`https://api.themoviedb.org/3/movie/` + id + `/videos?language=en-US`, TMDBoptions);
+            const jsonData = await data.json();
+            const filteredData = jsonData?.results?.filter((vid) => vid.type === "Trailer");
+            const trailer = (filteredData?.length) ? filteredData[0] : jsonData.results[1];
+            setTrailer(trailer);
+        } else {
+            console.log("ID before fetching trailer", id);
+            const data = await fetch('https://api.themoviedb.org/3/tv/1396/videos?language=en-US', TMDBoptions);
+            const jsonData = await data.json();
+            const filteredData = jsonData?.results?.filter((vid) => vid.type === "Trailer");
+            const trailer = (filteredData?.length) ? filteredData[0] : jsonData.results[1];
+            setTrailer(trailer);
+        }
+    }
 
-    const movieTrailer = useSelector(store => store.movies.trailerVideo);
-    //const tvSeriesTrailer ;
+    useEffect(() => {
+        fetchTrailer()
+    }, [Trailer, mode]);
 
-    // if (selectedViewOption === "Movies") {
-    // } else if (selectedViewOption === "TvSeries") {
-    // } else {
-    //     return;
-    // }
+    if (Trailer === null) return;
 
     return (
         <div >
             <iframe className='w-screen aspect-video '
-
-                src={"https://www.youtube.com/embed/" + movieTrailer?.key + "?&autoplay=1&mute=1"}
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                src={"https://www.youtube.com/embed/" + Trailer?.key + "?&autoplay=1&mute=1"}
+            //allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             ></iframe>
         </div>
     )

@@ -8,7 +8,7 @@ const useMovieTrailer = (id) => {
 //fetch movie trailer to show on video bg
     const dispatch = useDispatch();
     
-    // console.log(id);
+    console.log(id);
     const getMoviesTrailer = async () => {
         if(id==null || id==undefined) return;
         const data = await fetch('https://api.themoviedb.org/3/movie/' + id + '/videos?language=en-US', TMDBoptions)

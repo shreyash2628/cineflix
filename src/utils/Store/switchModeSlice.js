@@ -3,12 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const switchModeSlice = createSlice({
     name: "switchMode",
     initialState: {
-        mode: "movies",
+        mode: "Movies",
     },
     reducers: {
-        addSwitchMode: (state,action) => {
-            state.mode=action.payload;
+        addSwitchMode: (state, action) => {
+            state.mode = action.payload;
         },
+
 
     },
 })
