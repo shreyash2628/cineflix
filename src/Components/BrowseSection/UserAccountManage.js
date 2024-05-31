@@ -1,11 +1,13 @@
 import React from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../utils/Firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addSwitchMode } from '../../utils/Store/switchModeSlice';
 
 const UserAccountManage = ({ handleUserAccountManage }) => {
   const dispatch = useDispatch();
+  const mode = useSelector(store => store.switchMode?.mode);
+
 
   const handleMoviesButtonClicked = () => {
     dispatch(addSwitchMode("Movies"));
@@ -34,12 +36,12 @@ const UserAccountManage = ({ handleUserAccountManage }) => {
 
       <ul className="flex flex-col">
         <li>
-          <button className="block px-4 py-2 text-left text-gray-300 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={handleMoviesButtonClicked}>
+          <button className={`block  py-2 text-center w-full text-gray-300 hover:bg-gray-700 focus:outline-none ${mode === 'Movies' ? 'bg-slate-500' : 'hover:bg-gray-700'}`} onClick={handleMoviesButtonClicked}>
             Movies
           </button>
         </li>
         <li>
-          <button className="block px-4 py-2 text-left text-gray-300 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={handleTvSeriesButtonClicked}>
+          <button className={`block px-4 py-2 text-left text-gray-300 hover:bg-gray-700 focus:outline-none ${mode === 'TvSeries' ? 'bg-slate-500' : 'hover:bg-gray-700'}`} onClick={handleTvSeriesButtonClicked}>
             TV Series
           </button>
         </li>
