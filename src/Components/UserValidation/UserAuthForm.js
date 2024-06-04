@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Validate } from "../../utils/Validate";
-import { createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/Firebase";
 import LinearProgress from '@mui/material/LinearProgress';
 
 const UserAuthForm = () => {
-  const [showLoader,setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [IsSignIn, setIsSignIn] = useState(true);
+  const [useTestCredentials, setUseTestCredentials] = useState(false); // New state variable for checkbox
 
   const handleOnSignUpClick = () => {
     setIsSignIn(!IsSignIn);
   };
+
   const handleFormSubmitButton = (e) => {
     e.preventDefault();
     const message = Validate(email, password);
@@ -24,16 +26,12 @@ const UserAuthForm = () => {
     if (IsSignIn) {
       // SignIn logic
       setShowLoader(true);
-      console.log("Signing in");
-      
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in 
           console.log(userCredential);
           const user = userCredential.user;
           console.log(user);
-
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -48,7 +46,6 @@ const UserAuthForm = () => {
         .then((userCredential) => {
           console.log(userCredential);
           console.log("user SignedUp");
-         // alert("User Created Successfully !!!");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -57,6 +54,16 @@ const UserAuthForm = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (useTestCredentials) {
+      setEmail("testuser@netflixgpt.com");
+      setPassword("TestPassword@123");
+    } else {
+      setEmail("");
+      setPassword("");
+    }
+  }, [useTestCredentials]);
 
   return (
     <div className="shadow-md shadow-slate-500 p-8 bg-gradient-to-t from-slate-900 absolute top-16 border ">
@@ -113,11 +120,17 @@ const UserAuthForm = () => {
         </p>
       </div >
 
-      {
-        showLoader?<LinearProgress className="mt-6"/>:<></>
-      }
-
-      
+      {IsSignIn ? <div className="flex flex-row justify-center pt-2">
+        <input
+          type="checkbox"
+          checked={useTestCredentials}
+          onChange={() => {
+            setUseTestCredentials(!useTestCredentials);
+          }}
+        />
+        <p className="text-white pl-2">use test credentials</p>
+      </div> : <></>}
+      {showLoader ? <LinearProgress className="mt-6" /> : <></>}
     </div>
   );
 };
