@@ -10,6 +10,8 @@ import usePopularMovies from '../../customHooks/usePopularMovies';
 import useUpcomingTvSeries from '../../customHooks/useUpcomingTvSeries';
 import usePopularTvSeries from '../../customHooks/usePopularTvSeries';
 import useNowPlayingTvSeries from '../../customHooks/useNowPlayingTvSeries';
+import { useSelector } from 'react-redux';
+import MainPageShimmer from './MainPageShimmer';
 
 const Browse = () => {
   useTopRatedMovies();
@@ -21,11 +23,18 @@ const Browse = () => {
   usePopularMovies();
   usePopularTvSeries();
 
+  const value = useSelector(store => store.gptSearchedValue?.value);
+
   return (
     <div className=''>
-      <Header/>
-      <MainVideoContainer/>
-      <SecondaryContainer/>
+      <Header />
+
+      {
+        value ? <><MainPageShimmer/></> : <><MainVideoContainer />
+          <SecondaryContainer /></> 
+      }
+
+
 
     </div>
   )

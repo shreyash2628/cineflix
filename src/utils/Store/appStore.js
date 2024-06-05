@@ -3,6 +3,7 @@ import userReducer from './userSlice';
 import moviesReducer from './moviesSlice';
 import modeReducer from "./switchModeSlice";
 import tvSeriesReducer from "./tvSeriesSlice";
+import gptSearchedReducer from './GptSearchedSlice';
 
 const appStore = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const appStore = configureStore({
         movies:moviesReducer,
         switchMode:modeReducer,
         tvSeries:tvSeriesReducer,
+        gptSearchedValue:gptSearchedReducer,
     }
 })
 

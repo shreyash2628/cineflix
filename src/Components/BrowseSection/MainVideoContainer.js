@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import VideoBackground from './VideoBackground';
 import VideoTitle from './VideoTitle';
+import MainPageShimmer from './MainPageShimmer';
 
 const MainVideoContainer = () => {
     const [originalTitle, setOriginalTitle] = useState('');
@@ -13,7 +14,6 @@ const MainVideoContainer = () => {
     const tvSeriesFromStore = useSelector(store => store.tvSeries?.topRatedTvSeries);
 
     const mode = useSelector(store => store.switchMode?.mode);
-   // const supposevideoId = useSelector(store => store.switchMode?.trailer);
 
     useEffect(() => {
         if (mode === "Movies") {
@@ -35,7 +35,9 @@ const MainVideoContainer = () => {
         }
     }, [moviesFromStore, tvSeriesFromStore, mode]);
 
-    if (videoId === null) return;
+    if (videoId === null) return (
+        <MainPageShimmer/>
+    );
 
     return (
         <div className=''>
