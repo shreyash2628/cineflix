@@ -23,8 +23,6 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "spanish", name: "Spanish" },
 ];
 
-export const OPENAI_KEY = process.env.REACT_APP_OPENAI_KEY;
-
 
 export const TMDBoptions = {
   method: 'GET',
@@ -34,3 +32,4 @@ export const TMDBoptions = {
   }
 };
 
+export const chatGptKey = "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";

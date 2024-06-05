@@ -7,13 +7,14 @@ import { addUser, removeUser } from '../../utils/Store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 import { addGptSearchedValue } from '../../utils/Store/GptSearchedSlice';
+import useSearchContent from '../../customHooks/useSearchContent';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showUserAccountManage, setShowUserAccountManage] = useState(false);
   const [showGPTSearchBar, setShowGPTSearchBar] = useState(false);
-  const [GptSearchedValue , setGptSearchedValue] = useState('');
+  const [GptSearchedValue, setGptSearchedValue] = useState('');
   const handleUserAccountManage = () => {
     setShowUserAccountManage(!showUserAccountManage);
   }
@@ -38,22 +39,36 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(addGptSearchedValue(GptSearchedValue));
-  }, [GptSearchedValue]); 
+  }, [GptSearchedValue]);
+
+
+  // const fetchData = useSearchContent(GptSearchedValue);
+ 
+
+  const handleSearchButton = ()=>{
+    // fetchData();
+  }
 
 
   return (
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-end">
       <div className='flex justify-center items-center'>
         {showGPTSearchBar ?
-          <input
-            className="my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-96 rounded-md px-3 mr-3 "
-            type="text"
-            value={GptSearchedValue}
-            onChange={(e)=>setGptSearchedValue(e.target.value)}
-          /> : <></>
+          <div className='flex flex-row items-center mr-3 rounded-lg bg-gray-800'>
+
+            <input
+              className="my-2 bg-gray-800  text-gray-400 w-96 rounded-md px-3 mx-3 "
+              type="text"
+              value={GptSearchedValue}
+              onChange={(e) => setGptSearchedValue(e.target.value)}
+            />
+
+            <button className='pr-3 ' onClick={handleSearchButton}>🔍</button>
+
+          </div> : <></>
         }
         <button className='text-white border py-1 rounded-md px-2' onClick={() => setShowGPTSearchBar(!showGPTSearchBar)}
-        >{showGPTSearchBar?"❌ Close-Search":"🔍 GPT-Search"}</button>
+        >{showGPTSearchBar ? "❌ Close-Search" : "🔍 GPT-Search"}</button>
       </div>
       <div className='flex p-2 h-14 flex-col ' onMouseEnter={handleUserAccountManage}
         onMouseLeave={handleUserAccountManage}>
