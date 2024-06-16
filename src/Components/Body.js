@@ -2,6 +2,8 @@ import React from 'react'
 import {RouterProvider,createBrowserRouter} from "react-router-dom";
 import Login from './UserValidation/Login';
 import Browse from './BrowseSection/Browse';
+import WatchContent from './Content/WatchContent';
+import MainVideoContainer from './BrowseSection/MainVideoContainer';
 
 
 const Body = () => {
@@ -15,7 +17,11 @@ const Body = () => {
         {
             path:"/browse",
             element:<Browse/>,
-        }
+        },
+        {
+          path:"/content",
+          element:<MainVideoContainer/>,
+      }
     ])
 
    

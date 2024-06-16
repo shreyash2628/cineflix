@@ -19,6 +19,9 @@ import SearchedContentContainer from './SearchedContentContainer';
 const Browse = () => {
   const dispatch=useDispatch();
   const [searchedContent,setSearchedContent]=useState(null);
+
+  const mode = useSelector(store => store.switchMode?.mode);
+
   useTopRatedMovies();
   useTopRatedTvSeries();
   useUpcomingMovies();
@@ -32,18 +35,9 @@ const Browse = () => {
   //   fetchData();
   // },[searchedContent]);
 
-  // const fetchData = ()=>{
-  //   const searchedValue = useSelector(store => store.gptSearchedValue?.value);
-  //   setSearchedContent(searchedValue);
-  //   useSearchContent(searchedValue);
-  // }
-//const fetchedSearchData = useSelector(store => store.gptSearchedValue?.content);
-
-//console.log("l",fetchedSearchData);
 
 
 const searchedValue = useSelector(store => store.gptSearchedValue?.value);
-// console.log("43",searchedValue);
 if(searchedValue==='')
   {
     dispatch(addSearchedContent(""));

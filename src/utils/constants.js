@@ -32,4 +32,3 @@ export const TMDBoptions = {
   }
 };
 
-export const chatGptKey = "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";

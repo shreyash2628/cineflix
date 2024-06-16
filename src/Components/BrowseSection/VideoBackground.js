@@ -5,20 +5,23 @@ import { TMDBoptions } from '../../utils/constants';
 const VideoBackground = ({ id }) => {
     const [Trailer, setTrailer] = useState(null);
     const mode = useSelector(store => store.switchMode?.mode);
+    
     //id aa rhi hai alag alag including null value also  
     const fetchTrailer = async () => {
         if (mode === "Movies") {
             const data = await fetch(`https://api.themoviedb.org/3/movie/` + id + `/videos?language=en-US`, TMDBoptions);
+            
             const jsonData = await data.json();
             const filteredData = jsonData?.results?.filter((vid) => vid.type === "Trailer");
             const trailer = (filteredData?.length) ? filteredData[0] : jsonData.results[1];
             setTrailer(trailer);
         } else {
-            console.log("ID before fetching trailer", id);
-            const data = await fetch('https://api.themoviedb.org/3/tv/1396/videos?language=en-US', TMDBoptions);
+            // console.log("ID before fetching trailer", id);
+            const data = await fetch(`https://api.themoviedb.org/3/tv/`+id+`/videos?language=en-US`, TMDBoptions);
             const jsonData = await data.json();
+            // console.log("tvseires",id);
             const filteredData = jsonData?.results?.filter((vid) => vid.type === "Trailer");
-            const trailer = (filteredData?.length) ? filteredData[0] : jsonData.results[1];
+            const trailer = (filteredData?.length) ? filteredData[0] : jsonData?.results;
             setTrailer(trailer);
         }
     }
