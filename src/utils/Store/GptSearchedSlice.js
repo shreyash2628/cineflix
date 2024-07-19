@@ -1,20 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const GptSearchedValueSlice = createSlice({
-    name:'GptSearchedValue',
-    initialState:{
-        value:"",
-        content:"",
+    name: 'GptSearchedValue',
+    initialState: {
+        value: "",
+        showShimmer:false,
+        content: [],
+        contentName: "",
     },
-    reducers:{
+    reducers: {
         addGptSearchedValue: (state, action) => {
             state.value = action.payload;
         },
-        addSearchedContent: (state, action) => {
-            state.content = action.payload;
+        addGptSearchedContent: (state, action) => {
+            state.content =  action.payload;
         },
+        addGPTResult: (state, action) => {
+            state.contentName = [...state.contentName, action.payload];
+        },
+        addShowShimmer:(state,action) =>{
+            state.showShimmer = action.payload;
+        }
     }
 })
 
-export const { addGptSearchedValue,addSearchedContent } = GptSearchedValueSlice.actions;
+export const { addGptSearchedValue, addGptSearchedContent, addGPTResult ,addShowShimmer } = GptSearchedValueSlice.actions;
 export default GptSearchedValueSlice.reducer;

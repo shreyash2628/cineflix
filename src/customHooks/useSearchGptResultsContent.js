@@ -3,7 +3,7 @@
 // import { TMDBoptions } from '../utils/constants';
 // import { addSearchedContent } from '../utils/Store/GptSearchedSlice';
 
-// const useSearchContent = (searchedContent) => {
+// const useSearchGptResultsContent = (searchedContent) => {
 //     const dispatch = useDispatch();
     
 //     useEffect(() => {
@@ -20,4 +20,4 @@
 //     }, [searchedContent, dispatch]);
 // };
 
-// export default useSearchContent;
+// export default useSearchGptResultsContent;

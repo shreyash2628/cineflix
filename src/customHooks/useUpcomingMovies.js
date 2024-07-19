@@ -26,7 +26,7 @@ const useUpcomingMovies = () => {
     };
     useEffect(() => {
         getUpcomingMovies()
-    }, [])
+    }, [mode])
 }
 
 export default useUpcomingMovies;

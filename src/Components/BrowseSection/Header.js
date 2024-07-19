@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import UserAccountManage from './UserAccountManage';
 import { auth } from '../../utils/Firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../../utils/Store/userSlice';
 import { useNavigate } from 'react-router-dom';
-
-import { addGptSearchedValue } from '../../utils/Store/GptSearchedSlice';
-import useSearchContent from '../../customHooks/useSearchContent';
+import { addGPTResult, addGptSearchedContent, addGptSearchedValue, addShowShimmer } from '../../utils/Store/GptSearchedSlice';
+import openai from '../../utils/openAi';
+import { TMDBoptions } from '../../utils/constants';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -15,12 +15,10 @@ const Header = () => {
   const [showUserAccountManage, setShowUserAccountManage] = useState(false);
   const [showGPTSearchBar, setShowGPTSearchBar] = useState(false);
   const [GptSearchedValue, setGptSearchedValue] = useState('');
+
   const handleUserAccountManage = () => {
     setShowUserAccountManage(!showUserAccountManage);
   }
-
-
-  // console.log(GptSearchedValue);
 
   useEffect(() => {
     //whenever auth ischanged means whenever someone login or logout
@@ -41,15 +39,37 @@ const Header = () => {
     dispatch(addGptSearchedValue(GptSearchedValue));
   }, [GptSearchedValue]);
 
+  const handleInputChange = (e) => {
+    setGptSearchedValue(e.target.value);
+    dispatch(addShowShimmer(true));
+  };
 
-  // const fetchData = useSearchContent(GptSearchedValue);
- 
+  const handleSearchButton = async () => {
+    const gptQuery = "Act as movie/tvseries recommending system and suggest me some movies for the query :" + GptSearchedValue + "Give me list of name of only 10 movies.want response in comma seperated as shown ahead,[don,golmal,raaz,om shanti om]";
 
-  const handleSearchButton = ()=>{
-    // fetchData();
+    const gptResults = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: gptQuery }],
+    });
+    const array = gptResults.choices[0].message.content.split(",");
+
+    dispatch(addGPTResult(array));
+
+
+    const promiseArray = array.map(movie => fetchMoviesForGptResults(movie));
+
+    const tmdbRes = await Promise.all(promiseArray);
+
+    dispatch(addShowShimmer(false));
+    dispatch(addGptSearchedContent(tmdbRes));
+
+  };
+
+  const fetchMoviesForGptResults = async (movie) => {
+    const data = await fetch('https://api.themoviedb.org/3/search/movie?query=' + movie + '&include_adult=false&language=hi&page=1', TMDBoptions);
+    const jsonData = await data.json();
+    return jsonData.results.slice(0, 2);
   }
-
-
   return (
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-end">
       <div className='flex justify-center items-center'>
@@ -60,10 +80,10 @@ const Header = () => {
               className="my-2 bg-gray-800  text-gray-400 w-96 rounded-md px-3 mx-3 "
               type="text"
               value={GptSearchedValue}
-              onChange={(e) => setGptSearchedValue(e.target.value)}
+              onChange={handleInputChange}
             />
 
-            <button className='pr-3 ' onClick={handleSearchButton}>🔍</button>
+            <button className='pr-3 ' onClick={handleSearchButton} >🔍</button>
 
           </div> : <></>
         }

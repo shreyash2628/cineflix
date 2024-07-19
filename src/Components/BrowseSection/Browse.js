@@ -11,9 +11,6 @@ import useUpcomingTvSeries from '../../customHooks/useUpcomingTvSeries';
 import usePopularTvSeries from '../../customHooks/usePopularTvSeries';
 import useNowPlayingTvSeries from '../../customHooks/useNowPlayingTvSeries';
 import { useDispatch, useSelector } from 'react-redux';
-import MainPageShimmer from './MainPageShimmer';
-import useSearchContent from '../../customHooks/useSearchContent';
-import { addSearchedContent } from '../../utils/Store/GptSearchedSlice';
 import SearchedContentContainer from './SearchedContentContainer';
 
 const Browse = () => {
@@ -30,26 +27,7 @@ const Browse = () => {
   useNowPlayingTvSeries();
   usePopularMovies();
   usePopularTvSeries();
-
-  // useEffect(()=>{
-  //   fetchData();
-  // },[searchedContent]);
-
-
-
 const searchedValue = useSelector(store => store.gptSearchedValue?.value);
-if(searchedValue==='')
-  {
-    dispatch(addSearchedContent(""));
-  }
-
- useSearchContent(searchedValue);
- const fetchedData = useSelector (store => store.gptSearchedValue?.content);
-//  useEffect(() => {
- 
-// }, [fetchedData]);
-//  setSearchedContent(fetchedData);
-// console.log("46 fd.r",fetchedData?.results);
   return (
     <div className=''>
       <Header />
@@ -61,22 +39,9 @@ if(searchedValue==='')
         </>
         :
         <>
-        {/* <MainPageShimmer/> */}
         <SearchedContentContainer/>
-        {/* {
-        fetchedData===''?<>
-        <MainVideoContainer />
-        <SecondaryContainer />
-        </>
-        :<>
-        
-        </>
-        } */}
          </>
-      }
-
-
-     
+      } 
     </div>
   )
 }

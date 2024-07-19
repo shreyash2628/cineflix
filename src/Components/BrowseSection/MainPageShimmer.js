@@ -1,6 +1,5 @@
 import React from 'react';
-import MovieCard from './MovieCard';
-
+ 
 const MainPageShimmer = () => {
     const arr=[1,2,2,2,2,2,2,2,2,2];
     return (

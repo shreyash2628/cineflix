@@ -13,7 +13,6 @@ const MainVideoContainer = () => {
     const mode = useSelector(store => store.switchMode?.mode);
 
     const content = useSelector(store=>store.content);
-    console.log("content",content);
     useEffect(() => {
         window.scrollTo(0, 0);
         setOriginalTitle(content.contentName);
