@@ -30,6 +30,8 @@ const MainVideoContainer = () => {
         <div className=''>
             <VideoTitle title={originalTitle} overview={overview} vote_average={voteAverage?.toFixed(1)} />
             <VideoBackground id={videoId} />
+           
+
         </div>
     );
 };

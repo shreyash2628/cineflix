@@ -20,7 +20,7 @@ const Body = () => {
         },
         {
           path:"/content",
-          element:<MainVideoContainer/>,
+          element:<WatchContent/>,
       }
     ])
 
