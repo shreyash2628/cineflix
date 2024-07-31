@@ -76,7 +76,7 @@ const UserAuthForm = () => {
           <input
             className="my-2 bg-gray-800 pl-2 py-1 text-gray-400 w-auto"
             placeholder="Username"
-            type="file"
+            type="text"
             onChange={(e) => setUsername(e.target.value)}
           />
         )}
